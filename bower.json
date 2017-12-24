@@ -1,0 +1,21 @@
+{
+  "name": "studio_elm_admin",
+  "homepage": "https://github.com/timCF/studio_elm_admin",
+  "description": "new progressive admin web interface for studio",
+  "main": "index.html",
+  "authors": [
+    "timCF"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "bulletjs": "*"
+  }
+}
