@@ -6,16 +6,31 @@
     <script src="elm.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bulletjs/bullet.js"></script>
+    <script src="vendor/long.js"></script>
+    <script src="vendor/bytebuffer.js"></script>
+    <script src="vendor/protobuf.js"></script>
+    <script src="vendor/base64-arraybuffer.js"></script>
   </head>
   <body>
     <script>
       Elm.Main.fullscreen();
-      const bullet = $.bullet("wss://crm.lemooorstudio.ru:7772/bullet");
-      bullet.onopen = () => console.log("bullet onopen");
-      bullet.ondisconnect = () => console.log("bullet ondisconnect");
-      bullet.onclose = () => console.log("bullet onclose");
-      bullet.onheartbeat = () => console.log("bullet onheartbeat");
-      bullet.onmessage = (data) => console.log("bullet onmessage", data);
+      dcodeIO.ProtoBuf.loadProtoFile("studio_proto/studio.proto", (error, builder) => {
+        const proto         = builder.build("lemooor.studio");
+        const ping          = new proto.Request({
+                                cmd: 'CMD_ping',
+                                client_kind: 'CK_admin',
+                                login: '',
+                                password: '',
+                              });
+        const ping_base64   = Base64ArrayBuffer.encode(proto.Request.encode(ping).toArrayBuffer());
+        const bullet        = $.bullet("wss://crm.lemooorstudio.ru:7772/bullet");
+        bullet.onopen       = () => console.log("bullet onopen");
+        bullet.ondisconnect = () => console.log("bullet ondisconnect");
+        bullet.onclose      = () => console.log("bullet onclose");
+        bullet.onheartbeat  = () => bullet.send(ping_base64);
+        bullet.onmessage    = (data) => console.log("bullet onmessage", data);
+        window.bullet       = bullet;
+      });
     </script>
   </body>
 </html>
