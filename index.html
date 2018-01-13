@@ -14,7 +14,7 @@
   <body>
     <script>
       Elm.Main.fullscreen();
-      dcodeIO.ProtoBuf.loadProtoFile("studio_proto/studio.proto", (error, builder) => {
+      dcodeIO.ProtoBuf.loadProtoFile("vendor/studio_proto2/studio.proto", (error, builder) => {
         const proto         = builder.build("lemooor.studio");
         const ping          = new proto.Request({
                                 cmd: 'CMD_ping',
