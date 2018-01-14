@@ -13,7 +13,7 @@
   </head>
   <body>
     <script>
-      Elm.Main.fullscreen();
+      const app = Elm.Main.fullscreen();
       dcodeIO.ProtoBuf.loadProtoFile("vendor/studio_proto2/studio.proto", (error, builder) => {
         const proto         = builder.build("lemooor.studio");
         const ping          = new proto.Request({
@@ -28,7 +28,7 @@
         bullet.ondisconnect = () => console.log("bullet ondisconnect");
         bullet.onclose      = () => console.log("bullet onclose");
         bullet.onheartbeat  = () => bullet.send(ping_base64);
-        bullet.onmessage    = (data) => console.log("bullet onmessage", data);
+        bullet.onmessage    = (data) => app.ports.toElm.send(data);
         window.bullet       = bullet;
       });
     </script>
