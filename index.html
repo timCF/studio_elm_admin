@@ -28,7 +28,7 @@
         bullet.ondisconnect = () => console.log("bullet ondisconnect");
         bullet.onclose      = () => console.log("bullet onclose");
         bullet.onheartbeat  = () => bullet.send(ping_base64);
-        bullet.onmessage    = (data) => app.ports.toElm.send(data);
+        bullet.onmessage    = (data) => app.ports.toElm.send(data.data);
         window.bullet       = bullet;
       });
     </script>

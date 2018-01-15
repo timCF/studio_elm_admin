@@ -1,7 +1,9 @@
-module Main exposing (..)
+port module Main exposing (..)
 import Html exposing (..)
 
---port toElm : (String -> msg) -> Sub msg
+(>>) a b = b
+
+port toElm : (String -> msg) -> Sub msg
 
 -- MAIN
 
@@ -29,22 +31,27 @@ init = ( {login = "Hello", password = "World"}, Cmd.none )
 -- UPDATE
 
 type Msg
-  = DoNothing
+  = BulletIn String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    DoNothing ->
+    BulletIn _ ->
       ( model, Cmd.none )
-
 -- VIEW
 
 view : Model -> Html Msg
 view {login, password} =
-    div [] [text (login ++ " " ++ password)]
+  div [] [text (login ++ " " ++ password)]
 
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+  toElm bulletIn
+
+bulletIn : String -> Msg
+bulletIn text =
+  text
+  |> Debug.log "bulletIn"
+  |> BulletIn
